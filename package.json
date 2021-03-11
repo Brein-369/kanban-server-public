@@ -1,0 +1,33 @@
+{
+  "name": "kanban-server",
+  "version": "1.0.0",
+  "description": "API untuk managing task, yang akan di hit oleh kanban client",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev" : "NODE_ENV=development nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Brein-369/kanban-server.git"
+  },
+  "author": "edward",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Brein-369/kanban-server/issues"
+  },
+  "homepage": "https://github.com/Brein-369/kanban-server#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^8.5.1",
+    "sequelize": "^6.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7",
+    "sequelize-cli": "^6.2.0"
+  }
+}
