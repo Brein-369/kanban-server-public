@@ -62,24 +62,34 @@ class Controller {
     }
 
     static getAllTasks(req, res, next){
-        Category.findAll({include : [Task, User]})
+        
+        Category.findAll({include : [
+            {
+                model: Task, 
+                include : User
+            }
+        ]})
         .then(response=>{
             let data = response
-            for(let i = 0 ; i< data.length; i++){
-                for(let j = 0; j< data[i].Tasks.length; j++){
+            
+            //atau bisa pakai Category.findAll({include : [Task, include: User]})
+            // // CARA MANUAL MASUKIN EMAIL KE DALAM ARRAY TASK KALAU PAKAI Category.findAll({include : Task, User})   >>>(task dan user array terpisah)
+            // for(let i = 0 ; i< data.length; i++){
+            //     for(let j = 0; j< data[i].Tasks.length; j++){
 
-                    for(let k = 0; k< data[i].Users.length; k++){
-                        if(data[i].Tasks[j].UserId === data[i].Users[k].id){
-                            console.log(data[i].Tasks[j].UserId, data[i].Users[k].id, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<,");
-                            data[i].Tasks[j].email = data[i].Users[k].email
-                            console.log(data[i].Tasks[j].email);
-                            break
-                        }
-                    }
-                }
-            }
-            data[0].tes = "tes aja <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-            console.log(data);
+            //         for(let k = 0; k< data[i].Users.length; k++){
+            //             if(data[i].Tasks[j].UserId === data[i].Users[k].id){
+            //                 console.log(data[i].Tasks[j].UserId, data[i].Users[k].id);
+            //                 //asign value ke hasil response sequelize harus pakai setDataValue
+            //                 data[i].Tasks[j].setDataValue("email", data[i].Users[k].email)
+            //                 console.log(data[i].Tasks[j].email);
+            //                 break
+            //             }
+            //         }
+            //     }
+            // }
+
+            console.log(JSON.stringify(data,null,2));
             res.status(200).json(data)
 
         })
@@ -89,11 +99,12 @@ class Controller {
     }
 
     static addTask(req, res, next){
+        console.log(req.body.due_date);
         let obj = {
             title : req.body.title,
             UserId : req.currentUser.id,
             CategoryId : req.body.CategoryId,
-            due_date : req.due_date
+            due_date : req.body.due_date
         }
         Task.create(obj)
         .then(data=>{

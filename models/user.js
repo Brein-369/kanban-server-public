@@ -13,7 +13,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       User.hasMany(models.Task)
-      User.belongsToMany(models.Category,{through : models.Task})
+      //belongsto ga jadi dipake soalnya malah ga bisa munculin di response kalo pake nested include
+      // User.belongsToMany(models.Category,{through : models.Task})
     }
   };
   User.init({
