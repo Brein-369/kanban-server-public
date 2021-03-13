@@ -26,7 +26,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     UserId: DataTypes.INTEGER,
     CategoryId: DataTypes.INTEGER,
-    due_date: DataTypes.DATE
+    due_date: {
+      type : DataTypes.DATE,
+      validate : {
+        isAfter : new Date(Date.now() - 86400000).toISOString().split('T')[0]
+      }
+    }
   }, {
     sequelize,
     modelName: 'Task',

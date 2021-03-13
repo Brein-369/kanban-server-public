@@ -11,7 +11,7 @@ router.get('/category', Controller.getCategoryName)
 router.use('/:id', authorize)
 router.get('/:id', Controller.getTask)
 router.put('/:id', Controller.editTask)
-// router.patch('/:id', Controller.changeCategory)
+router.patch('/:id', Controller.changeCategory)
 router.delete('/:id', Controller.deleteTask)
 
 module.exports = router

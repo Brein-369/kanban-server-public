@@ -13,7 +13,12 @@ Request Header
 Not needed
 
 Request Body
-Not Needed
+```
+  {
+    "email": <input email>,
+    "password": "<input password>",
+  }
+```
 
 Response(201-ok)
 ```
@@ -39,7 +44,12 @@ Request Header
 Not Needed
 
 Request Body
-Not Needed
+```
+  {
+    "email": <input email>,
+    "password": "<input password>",
+  }
+```
 
 Response(200-ok)
 ```
@@ -48,6 +58,13 @@ Response(200-ok)
     "email": "<user email>",
     "access_token": "<user access token>"
   }
+```
+
+Response(400-Bad Request)
+```
+{
+  "message": "Validation Error"
+}
 ```
 
 Response(401-Unauthorized)
@@ -66,7 +83,11 @@ Request Header
 Not Needed
 
 Request Body
-Not Needed
+```
+{
+  "googleToken": "<googleToken>"
+}
+```
 
 Response(200-ok)
 ```
@@ -80,7 +101,7 @@ Response(200-ok)
 
 
 
-# GET /todos
+# GET /category
 
 Request Header
 ```
@@ -95,34 +116,33 @@ Not Needed
 Response(200-ok)
 ```
 [
-  {
-    "id": 1,
-    "title": "<todos title>",
-    "description": "<todos description>",
-    "status" : "<todos status>",
-    "due_date" : "<posted due_date>",
-    "createdAt": "2020-03-20T07:15:12.149Z",
-    "updatedAt": "2020-03-20T07:15:12.149Z",
-  },
-  {
-    "id": 2,
-    "title": "<todos title>",
-    "description": "<todos description>",
-    "status" : "<todos status>",
-    "due_date" : "<posted due_date>",
-    "createdAt": "2020-03-20T07:15:12.149Z",
-    "updatedAt": "2020-03-20T07:15:12.149Z",
-  }
+    {
+        "id": 1,
+        "name": "backlog",
+        "createdAt": "<time created>",
+        "updatedAt": "<time updated>"
+    },
+    {
+        "id": 2,
+        "name": "todo",
+        "createdAt": "<time created>",
+        "updatedAt": "<time updated>"
+    },
+    {
+        "id": 3,
+        "name": "doing",
+        "createdAt": "<time created>",
+        "updatedAt": "<time updated>"
+    },
+    {
+        "id": 4,
+        "name": "done",
+        "createdAt": "<time created>",
+        "updatedAt": "<time updated>"
+    }
 ]
 ```
 
-Response(400-Bad Request)
-```
-{
-  "message": "Validation Error"
-}
-```
-
 Response(500-Internal Server Error)
 ```
 {
@@ -133,56 +153,7 @@ Response(500-Internal Server Error)
 
 
 -----
-# POST /todos
-
-Request Header
-```
-{
-  "access_token": "<your access token>"
-}
-```
-
-Request Body
-```
-{
-    "title": "<title to get insert to>",
-    "description": "<description to get insert to>",
-    "status" : "<status to get insert to>",
-    "due_date" : "<due_date to get insert to>",
-}
-```
-
-Response(201-created)
-```
-{
-    "id": <given id by system>,
-    "title": "<posted title>",
-    "description": "<posted description>",
-    "status" : "<posted status>",
-    "due_date" : "<posted due_date>",
-    "createdAt": "<given id by system>",
-    "updatedAt": "<given id by system>",
-}
-```
-
-Response(400-Bad Request)
-```
-{
-  "message": "Validation Error"
-}
-```
-
-Response(500-Internal Server Error)
-```
-{
-  "message": "Internal Server Error"
-}
-```
-
-
-
------
-# GET /todos/:id
+# GET /tasks
 
 Request Header
 ```
@@ -194,36 +165,50 @@ Request Header
 Request Body
 Not Needed
 
-Request Params
+
+Response(201-created) 
+below structure one index example of array result
 ```
-id = <id requested>
+[
+    {
+        "id": "<category id>",
+        "name": "<category name>",
+        "createdAt": "<time created>",
+        "updatedAt": "<time updated>"
+        "Tasks": [
+            {
+                "id": "<task id>",
+                "title": "<task title>",
+                "UserId": "<user id>",
+                "CategoryId": "<category id>",
+                "due_date": "<task due date>",
+                "createdAt": "<time created>",
+                "updatedAt": "<time updated>"
+                "User": {
+                    "id": "<user id>",
+                    "email": "<user email>",
+                    "password": "<hashed password>",
+                    "createdAt": "<time created>",
+                    "updatedAt": "<time updated>"
+                }
+            },.....
+        ].....
+    }
+]
+
 ```
 
-Response(200-ok)
-```
-  {
-    "id": <id as request>,
-    "title": "<todos title>",
-    "description": "<todos description>",
-    "status" : "<todos status>",
-    "due_date" : "<todos due_date>",
-    "createdAt": "<todos createdAt>",
-    "updatedAt": "<todos updatedAt>",
-  }
-  ```
-
-Response(404-Error Not Found)
+Response(500-Internal Server Error)
 ```
 {
-  "message": "Error Not Found"
+  "message": "Internal Server Error"
 }
 ```
 
 
 
-
 -----
-# PUT /todos/:id
+# POST /tasks
 
 Request Header
 ```
@@ -235,12 +220,53 @@ Request Header
 Request Body
 ```
 {
-    "title": "<title to get updated to>",
-    "description": "<description to get updated to>",
-    "status" : "<status to get updated to>",
-    "due_date" : ""<due_date to get updated to>"",
+  "title": "<input task title>",
+  "CategoryId": "<input category id>", (autogenerate based from input position)
+  "due_date": "<input task due date>"
 }
 ```
+Request Params
+Not needed
+
+Response(200-ok)
+```
+{
+  "title": "<task title>",
+  "UserId": "<user id>", 
+  "CategoryId": "<category id>", 
+  "due_date": "<task due date>", 
+}
+```
+
+Response(400-Bad Request)
+```
+{
+  "message": "Validation Error"
+}
+```
+
+Response(500-Internal Server Error)
+```
+{
+  "message": "Internal Server Error"
+}
+```
+
+
+
+
+-----
+# GET /tasks/:id
+
+Request Header
+```
+{
+  "access_token": "<your access token>"
+}
+```
+
+Request Body
+Not needed
 
 Request Params
 ```
@@ -249,21 +275,27 @@ id = <id to be requested>
 
 Response(200-ok)
 ```
-  {
-    "id": <id as request>,
-    "title": "<todos title>",
-    "description": "<todos description>",
-    "status" : "<todos status>",
-    "due_date" : "2020-03-24T07:15:12.149Z",
-    "createdAt": "2020-03-20T07:15:12.149Z",
-    "updatedAt": "2020-03-20T07:15:12.149Z",
-  }
+{
+    "id": "<task id>",
+    "title": "<title task>",
+    "UserId": "<user id>",
+    "CategoryId": "<category id>",
+    "due_date": "<task due date>",
+    "createdAt": "<time created>",
+    "updatedAt": "<time updated>"
+}
 ```
 
 Response(400-Bad Request)
 ```
 {
   "message": "Validation Error"
+}
+```
+Response(401-Authorization Error)
+```
+{
+  "message": "Authorization Error"
 }
 ```
 
@@ -285,7 +317,7 @@ Response(500-Internal Server Error)
 
 
 -----
-# PATCH /todos/:id
+# PUT /tasks/:id
 
 Request Header
 ```
@@ -297,7 +329,9 @@ Request Header
 Request Body
 ```
 {
-    "status" : "<status to be requested>"
+  title : "<input edit title>",
+  CategoryId : "<input edit title>", (autogenerate based from input position)
+  due_date : "<input due date>"
 }
 ```
 
@@ -308,21 +342,27 @@ id = <id to be requested>
 
 Response(200-ok)
 ```
-  {
-    "id": <todos id>,
-    "title": "<todos title>",
-    "description": "<todos description>",
-    "status" : "<status to get updated to>",
-    "due_date" : "<todos due_date>",
-    "createdAt": "<todos createdAt>",
-    "updatedAt": "<todos updatedAt>",
-  }
+{
+    "id": "<task id>",
+    "title": "<title task>",
+    "UserId": "<user id>",
+    "CategoryId": "<category id>",
+    "due_date": "<task due date>",
+    "createdAt": "<time created>",
+    "updatedAt": "<time updated>"
+}
   ```
 
 Response(400-Bad Request)
 ```
 {
   "message": "Validation Error"
+}
+```
+Response(401-Authorization Error)
+```
+{
+  "message": "Authorization Error"
 }
 ```
 
@@ -340,10 +380,70 @@ Response(500-Internal Server Error)
 ```
 
 
+-----
+# PATCH /tasks/:id
+
+Request Header
+```
+{
+  "access_token": "<your access token>"
+}
+```
+
+Request Body
+```
+{
+  CategoryId : "<input edit title>", (autogenerate based from input position)
+}
+```
+
+Request Params
+```
+id = <id to be requested>
+```
+
+Response(200-ok)
+```
+{
+    "id": "<task id>",
+    "title": "<title task>",
+    "UserId": "<user id>",
+    "CategoryId": "<category id>",
+    "due_date": "<task due date>",
+    "createdAt": "<time created>",
+    "updatedAt": "<time updated>"
+}
+  ```
+
+Response(400-Bad Request)
+```
+{
+  "message": "Validation Error"
+}
+```
+Response(401-Authorization Error)
+```
+{
+  "message": "Authorization Error"
+}
+```
+
+Response(404-Error Not Found)
+```{
+  "message": "Error Not Found"
+}
+```
+
+Response(500-Internal Server Error)
+```
+{
+  "message": "Internal Server Error"
+}
+```
 
 
 -----
-# DELETE /todos/:id
+# DELETE /tasks/:id
 
 Request Header
 ```
@@ -360,9 +460,15 @@ id = <id to be requested>
 Response(200-ok)
 ```
   {
-    "message": "todo success to delete"
+    "message": "Task Deletion Success"
   }
   ```
+Response(401-Authorization Error)
+```
+{
+  "message": "Authorization Error"
+}
+```
 
 Response(404-Error Not Found)
 ```

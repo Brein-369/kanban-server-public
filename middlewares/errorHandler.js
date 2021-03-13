@@ -1,13 +1,18 @@
-const e = require("express")
+
 
 const errorHandler = (err, req, res , next) => {
-
+    console.log(err.name);
     if(err.name === 'SequelizeValidationError' || err.name === 'SequelizeUniqueConstraintError'){
         let theErr = err.errors.map(e=>{
             return e.message
         })
         res.status(400).json(theErr)
     }
+
+    else if( err.name === 'SequelizeForeignKeyConstraintError' || err.name === "SequelizeDatabaseError"){
+        res.status(400).json({message : 'Bad Request', detail : err.message ? err.message : 'no detail given'})
+    }
+
     else if(err.name === "400"){
         res.status(400).json({message : 'Bad Request', detail : err.message ? err.message : 'no detail given'})
     }
