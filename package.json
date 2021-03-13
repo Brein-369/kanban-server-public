@@ -2,11 +2,11 @@
   "name": "kanban-server",
   "version": "1.0.0",
   "description": "API untuk managing task, yang akan di hit oleh kanban client",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
+    "start" : "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "NODE_ENV=development nodemon app.js",
-    "start" : "node app.js"
+    "dev": "NODE_ENV=development nodemon app.js"
   },
   "repository": {
     "type": "git",
